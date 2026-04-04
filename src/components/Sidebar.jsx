@@ -82,7 +82,7 @@ export default function Sidebar() {
       </aside>
 
       {!isDesktop && !open && (
-        <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
+        <div className="fixed top-3 left-4 z-50 flex items-center gap-2">
          
           <div className="size-8 bg-indigo-500 rounded-[10px] flex items-center justify-center font-poppins-bold text-white">
             F
