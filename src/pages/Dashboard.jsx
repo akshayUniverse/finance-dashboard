@@ -2,6 +2,8 @@ import { Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
 import SummaryCard from "../components/dashboard/SummaryCard";
 import BalanceTrend from "../components/dashboard/BalanceTrend";
 import SpendingChart from "../components/dashboard/SpendingChart";
+import TransactionsTable from "../components/dashboard/TransactionsTable";
+import { useApp } from "../context/AppContext";
 import { transactions } from "../data/mockData";
 
 // Calculate summary numbers from real data
@@ -14,7 +16,8 @@ function getSummary() {
 }
 
 export default function Dashboard() {
-  const { income, expenses, balance, savings } = getSummary();
+  const { transactions } = useApp();
+  const { income, expenses, balance, savings } = getSummary(transactions);
 
   const cards = [
     {
@@ -82,6 +85,8 @@ export default function Dashboard() {
           <SpendingChart />
         </div>
       </div>
+
+       <TransactionsTable />
 
     </div>
   );
