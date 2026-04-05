@@ -56,25 +56,63 @@ body {
   }
 }
 
+@theme {
+ 
+  --text-10: 10px;
+  --text-11: 11px;
+  --text-12: 12px;
+  --text-13: 13px;
+  --text-14: 14px;
+  --text-16: 16px;
+  --text-18: 18px;
+  --text-20: 20px;
+  --text-22: 22px;
+  --text-24: 24px;
+  --text-26: 26px;
+  --text-28: 28px;
+  --text-30: 30px;
+  --text-32: 32px;
+  --text-34: 34px;
+  --text-35: 35px;
+  --text-36: 36px;
+  --text-38: 38px;
+  --text-40: 40px;
+  --text-42: 42px;
+  --text-45: 45px;
+
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1400px;
+  --breakpoint-3xl: 1600px;
+  --breakpoint-4xl: 1920px;
+
+  --font-poppins: "Poppins", sans-serif;
+  --font-poppins-bold: "PoppinsBold", sans-serif;
+  --font-poppins-semibold: "PoppinsSemiBold", sans-serif;
+  --font-poppins-light: "PoppinsLight", sans-serif;
+  --font-poppins-medium: "PoppinsMedium", sans-serif;
+}
 
 @layer utilities {
   .container-padding {
-    @apply px-10 md:px-18 2xl:px-18 3xl:px-22;
+    @apply px-10 md:px-18 2xl:px-18 ;
   }
   .section-block-padding {
-    @apply py-10 md:py-16 3xl:py-22;
+    @apply py-10 md:py-16 2xl:py-22;
   }
 
   .section-block-top {
-    @apply pt-10 md:pt-16 3xl:pt-22;
+    @apply pt-10 md:pt-16 2xl:pt-22;
   }
 
   .section-block-bottom {
-    @apply pb-10 md:pb-16 3xl:pb-22;
+    @apply pb-10 md:pb-16 2xl:pb-22;
   }
 
   .title-content-gap {
-    @apply mb-6 md:mb-8 3xl:mb-10;
+    @apply mb-6 md:mb-8 2xl:mb-10;
   }
   .fl1 {
     @apply text-[12px] sm:text-[10px] md:text-[16px] font-poppins-semibold text-black;
