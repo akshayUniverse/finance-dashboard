@@ -24,10 +24,15 @@ export default function Header() {
 
   return (
     <div className="flex items-center justify-between px-4 md:px-6 py-3 pl-16 md:pl-6 bg-white dark:bg-[#111827] border-b border-gray-200 dark:border-gray-700">
-      <div className="text-lg font-semibold pl-12 md:pl-0 font-poppins-semibold">Dashboard</div>
+      <div className="text-lg font-semibold pl-12 md:pl-0 font-poppins-semibold">
+        Dashboard
+      </div>
 
       <div className="flex items-center gap-3 relative">
-        <button onClick={toggleTheme} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+        <button
+          onClick={(e) => toggleTheme(e)}
+          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors"
+        >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
 
@@ -60,17 +65,26 @@ export default function Header() {
 
         <div className="relative profile-menu">
           {isMobile && (
-            <div onClick={() => setOpenMenu(!openMenu)} className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold cursor-pointer">
+            <div
+              onClick={() => setOpenMenu(!openMenu)}
+              className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold cursor-pointer"
+            >
               A
             </div>
           )}
 
           {openMenu && isMobile && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-2 z-50 border border-gray-100 dark:border-gray-700">
-              <div onClick={toggleTheme} className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer">
+              <div
+                onClick={(e) => toggleTheme(e)}
+                className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer"
+              >
                 Toggle Theme
               </div>
-              <div onClick={toggleRole} className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer">
+              <div
+                onClick={(e) => toggleRole(e)}
+                className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer"
+              >
                 Role: {role}
               </div>
               <div className="px-3 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg cursor-pointer text-red-500">

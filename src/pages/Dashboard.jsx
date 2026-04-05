@@ -4,6 +4,7 @@ import BalanceTrend from "../components/dashboard/BalanceTrend";
 import SpendingChart from "../components/dashboard/SpendingChart";
 import TransactionsTable from "../components/dashboard/TransactionsTable";
 import { useApp } from "../context/AppContext";
+import InsightsPanel from "../components/dashboard/InsightsPanel";
 import { transactions } from "../data/mockData";
 
 // Calculate summary numbers from real data
@@ -87,6 +88,8 @@ export default function Dashboard() {
       </div>
 
        <TransactionsTable />
+
+       <InsightsPanel />
 
     </div>
   );

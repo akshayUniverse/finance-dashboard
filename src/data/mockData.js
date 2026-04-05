@@ -163,8 +163,11 @@ export const transactions = [
 
 export const balanceTrend = [
   { month: "Jan", income: 90000, expenses: 14200, balance: 75800 },
-  { month: "Feb", income: 89500, expenses: 16950, balance: 72550 },
-  { month: "Mar", income: 88000, expenses: 12900, balance: 75100 },
+  { month: "Feb", income: 45000, expenses: 38500, balance: 6500  },
+  { month: "Mar", income: 78000, expenses: 52000, balance: 26000 },
+  { month: "Apr", income: 92000, expenses: 31000, balance: 61000 },
+  { month: "May", income: 55000, expenses: 48000, balance: 7000  },
+  { month: "Jun", income: 88000, expenses: 29000, balance: 59000 },
 ];
 
 export const categoryColors = {

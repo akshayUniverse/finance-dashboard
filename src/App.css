@@ -1,23 +1,22 @@
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-.dark {
-  --background: #171717;
+html.dark {
+  --background: #0B0F1A;
   --foreground: #ffffff;
 }
-
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-
 
 @layer base {
   @font-face {
@@ -130,5 +129,24 @@ body {
 
   .fl5 {
     @apply text-[6px] md:text-[10px] font-poppins-medium;
+  }
+}
+
+::view-transition-old(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: ripple-in 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  mix-blend-mode: normal;
+}
+
+@keyframes ripple-in {
+  from {
+    clip-path: circle(0% at var(--ripple-x, 50%) var(--ripple-y, 50%));
+  }
+  to {
+    clip-path: circle(150% at var(--ripple-x, 50%) var(--ripple-y, 50%));
   }
 }
