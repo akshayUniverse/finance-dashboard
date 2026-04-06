@@ -43,14 +43,14 @@ function getInsights(transactions) {
 
 function InsightCard({ icon, label, value, sub, color }) {
   return (
-    <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-[#1F2937] rounded-xl">
-      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+    <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-[#1F2937] rounded-[10px]">
+      <div className={`size-9 rounded-[10px] flex items-center justify-center shrink-0 ${color}`}>
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{label}</p>
-        <p className="text-sm font-bold text-gray-800 dark:text-white mt-0.5 truncate">{value}</p>
-        {sub && <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{sub}</p>}
+        <p className="text-[12px] text-gray-500 dark:text-gray-400 font-medium">{label}</p>
+        <p className="text-[14px] font-poppins-bold text-gray-800 dark:text-white mt-0.5 truncate">{value}</p>
+        {sub && <p className="text-[12px] text-gray-400 dark:text-gray-500 mt-0.5">{sub}</p>}
       </div>
     </div>
   );
@@ -107,12 +107,12 @@ export default function InsightsPanel() {
   ];
 
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-2xl p-5 flex flex-col gap-4">
+    <div className="bg-white dark:bg-[#111827] rounded-[14px] p-5 flex flex-col gap-4">
       <div>
-        <h2 className="font-semibold text-gray-800 dark:text-white font-poppins-semibold">
+        <h2 className="text-gray-800 dark:text-white font-poppins-semibold">
           Insights
         </h2>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+        <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">
           Auto-calculated from your transactions
         </p>
       </div>

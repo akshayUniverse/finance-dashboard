@@ -16,7 +16,7 @@ function CustomTooltip({ active, payload, label }) {
   }
 
   return (
-    <div className="bg-white dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-xl p-3 shadow-lg text-sm">
+    <div className="bg-white dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-[10px] p-3 shadow-lg text-[14px]">
       <p className="font-semibold mb-2 text-gray-700 dark:text-gray-200">{label}</p>
       {payload.map((item) => (
         <p key={item.name} style={{ color: item.color }} className="font-medium">
@@ -65,17 +65,17 @@ export default function BalanceTrend() {
   const data = getTrendData(transactions);
 
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-2xl p-5 flex flex-col gap-4 h-full">
+    <div className="bg-white dark:bg-[#111827] rounded-[14px] p-5 flex flex-col gap-4 h-full">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h2 className="font-semibold text-gray-800 dark:text-white font-poppins-semibold">
+          <h2 className="text-gray-800 dark:text-white font-poppins-semibold">
             Balance Trend
           </h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+          <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">
             Income vs Expenses overview
           </p>
         </div>
-        <span className="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 px-3 py-1 rounded-full font-medium">
+        <span className="text-[12px] bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 px-3 py-1 rounded-full font-poppins-medium">
           Last 3 months
         </span>
       </div>

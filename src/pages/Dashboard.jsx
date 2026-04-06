@@ -65,10 +65,10 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white font-poppins-bold">
+        <h1 className="text-[20px] md:text-[24px] text-gray-800 dark:text-white font-poppins-bold">
           {"Good morning, Akshay \u{1F44B}"}
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-[14px] text-gray-500 dark:text-gray-400 mt-1">
           Here's what's happening with your finances today.
         </p>
       </div>

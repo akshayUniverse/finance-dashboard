@@ -65,13 +65,13 @@ export default function TransactionsTable() {
 
   return (
     <>
-      <div className="bg-white dark:bg-[#111827] rounded-2xl p-5 flex flex-col gap-4">
+      <div className="bg-white dark:bg-[#111827] rounded-[14px] p-5 flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-gray-800 dark:text-white font-poppins-semibold">
+            <h2 className="text-gray-800 dark:text-white font-poppins-semibold">
               Transactions
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">
               {rows.length} records found
             </p>
           </div>
@@ -79,7 +79,7 @@ export default function TransactionsTable() {
           {role === "Admin" && (
             <button
               onClick={() => setModalOpen(true)}
-              className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-4 py-2 rounded-xl transition-colors font-medium"
+              className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[14px] px-4 py-2 rounded-[10px] transition-colors font-poppins-medium"
             >
               <Plus size={16} />
               Add Transaction
@@ -88,14 +88,14 @@ export default function TransactionsTable() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 flex-1 min-w-[180px]">
+          <div className="flex items-center gap-2 bg-gray-50 dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2 flex-1 min-w-[180px]">
             <Search size={15} className="text-gray-400 shrink-0" />
             <input
               type="text"
               placeholder="Search transactions..."
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              className="bg-transparent text-sm text-gray-700 dark:text-gray-200 outline-none w-full placeholder:text-gray-400"
+              className="bg-transparent text-[14px] text-gray-700 dark:text-gray-200 outline-none w-full placeholder:text-gray-400"
             />
           </div>
 
@@ -104,7 +104,7 @@ export default function TransactionsTable() {
               <button
                 key={type}
                 onClick={() => setTypeFilter(type)}
-                className={`px-3 py-2 rounded-xl text-xs font-semibold capitalize transition-colors ${
+                className={`px-3 py-2 rounded-[10px] text-[12px] font-poppins-semibold capitalize transition-colors ${
                   typeFilter === type
                     ? "bg-indigo-500 text-white"
                     : "bg-gray-100 dark:bg-[#1F2937] text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -116,30 +116,30 @@ export default function TransactionsTable() {
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-xl">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto rounded-[10px]">
+          <table className="w-full text-[14px]">
             <thead>
               <tr className="bg-gray-50 dark:bg-[#1F2937]">
                 <th
                   onClick={() => toggleSort("date")}
-                  className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-medium cursor-pointer hover:text-indigo-500 transition-colors rounded-l-xl"
+                  className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium cursor-pointer hover:text-indigo-500 transition-colors rounded-l-xl"
                 >
                   <div className="flex items-center gap-1">
                     Date {getSortIcon("date")}
                   </div>
                 </th>
-                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-medium">
+                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium">
                   Description
                 </th>
-                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-medium">
+                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium">
                   Category
                 </th>
-                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-medium">
+                <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium">
                   Type
                 </th>
                 <th
                   onClick={() => toggleSort("amount")}
-                  className="text-right px-4 py-3 text-gray-500 dark:text-gray-400 font-medium cursor-pointer hover:text-indigo-500 transition-colors rounded-r-xl"
+                  className="text-right px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium cursor-pointer hover:text-indigo-500 transition-colors rounded-r-xl"
                 >
                   <div className="flex items-center justify-end gap-1">
                     Amount {getSortIcon("amount")}
@@ -151,9 +151,9 @@ export default function TransactionsTable() {
               {rows.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-12 text-gray-400 dark:text-gray-500">
-                    <p className="text-2xl mb-2">{"\u{1F50D}"}</p>
-                    <p className="font-medium">No transactions found</p>
-                    <p className="text-xs mt-1">Try changing your search or filter</p>
+                    <p className="text-[24px] mb-2">{"\u{1F50D}"}</p>
+                    <p className="font-poppins-medium">No transactions found</p>
+                    <p className="text-[12px] mt-1">Try changing your search or filter</p>
                   </td>
                 </tr>
               ) : (
@@ -166,12 +166,12 @@ export default function TransactionsTable() {
                         year: "numeric",
                       })}
                     </td>
-                    <td className="px-4 py-3.5 text-gray-800 dark:text-gray-200 font-medium">
+                    <td className="px-4 py-3.5 text-gray-800 dark:text-gray-200 font-poppins-medium">
                       {tx.description}
                     </td>
                     <td className="px-4 py-3.5">
                       <span
-                        className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                        className="px-2.5 py-1 rounded-full text-[12px] font-poppins-medium text-white"
                         style={{ backgroundColor: categoryColors[tx.category] || "#6366f1" }}
                       >
                         {tx.category}
@@ -179,7 +179,7 @@ export default function TransactionsTable() {
                     </td>
                     <td className="px-4 py-3.5">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                        className={`px-2.5 py-1 rounded-full text-[12px] font-poppins-medium ${
                           tx.type === "income"
                             ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                             : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
@@ -189,7 +189,7 @@ export default function TransactionsTable() {
                       </span>
                     </td>
                     <td
-                      className={`px-4 py-3.5 text-right font-bold whitespace-nowrap ${
+                      className={`px-4 py-3.5 text-right font-poppins-bold whitespace-nowrap ${
                         tx.type === "income"
                           ? "text-emerald-600 dark:text-emerald-400"
                           : "text-red-500 dark:text-red-400"

@@ -80,16 +80,16 @@ export default function AddTransactionModal({ onClose }) {
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-[#1F2937] rounded-2xl p-6 w-full max-w-md shadow-2xl"
+        className="bg-white dark:bg-[#1F2937] rounded-[14px] p-6 w-full max-w-md shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-gray-800 dark:text-white font-poppins-semibold">
+          <h2 className="text-[18px] font-bold text-gray-800 dark:text-white font-poppins-semibold">
             Add Transaction
           </h2>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-[10px] hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
             <X size={18} className="text-gray-500" />
           </button>
@@ -98,12 +98,12 @@ export default function AddTransactionModal({ onClose }) {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Type</label>
+              <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Type</label>
               <select
                 name="type"
                 value={values.type}
                 onChange={handleChange}
-                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
               >
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
@@ -111,12 +111,12 @@ export default function AddTransactionModal({ onClose }) {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Category</label>
+              <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Category</label>
               <select
                 name="category"
                 value={values.category}
                 onChange={handleChange}
-                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
               >
                 {transactionCategories.map((category) => (
                   <option key={category} value={category}>
@@ -128,7 +128,7 @@ export default function AddTransactionModal({ onClose }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">
               {"Amount (\u20b9)"}
             </label>
             <input
@@ -139,23 +139,23 @@ export default function AddTransactionModal({ onClose }) {
               value={values.amount}
               onChange={handleChange}
               placeholder="e.g. 5000"
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Date</label>
+            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Date</label>
             <input
               type="date"
               name="date"
               value={values.date}
               onChange={handleChange}
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs text-gray-500 dark:text-gray-400 font-medium">Description</label>
+            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Description</label>
             <input
               type="text"
               name="description"
@@ -163,12 +163,12 @@ export default function AddTransactionModal({ onClose }) {
               value={values.description}
               onChange={handleChange}
               placeholder="e.g. Monthly groceries"
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2.5 text-sm text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 
           {error && (
-            <p className="text-red-500 text-xs bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-lg">
+            <p className="text-red-500 text-[12px] bg-red-50 dark:bg-red-900/20 px-3 py-2 rounded-[10px]">
               {error}
             </p>
           )}
@@ -176,13 +176,13 @@ export default function AddTransactionModal({ onClose }) {
           <div className="flex gap-3 mt-2">
             <button
               onClick={onClose}
-              className="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="flex-1 py-2.5 rounded-[10px] border border-gray-200 dark:border-gray-700 text-[14px] text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className="flex-1 py-2.5 rounded-xl bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-semibold transition-colors"
+              className="flex-1 py-2.5 rounded-[10px] bg-indigo-500 hover:bg-indigo-600 text-white text-[14px] font-semibold transition-colors"
             >
               Add Transaction
             </button>

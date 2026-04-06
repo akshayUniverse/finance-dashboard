@@ -83,12 +83,12 @@ export default function Sidebar() {
         >
           <div className="flex items-center justify-center shrink-0">
             {isCollapsed ? (
-              <div className="w-8 h-8 bg-indigo-500 rounded-xl flex items-center justify-center">
+              <div className="size-8 bg-indigo-500 rounded-[10px] flex items-center justify-center">
                 <Zap size={16} className="text-white" />
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-indigo-500 rounded-xl flex items-center justify-center shrink-0">
+                <div className="size-8 bg-indigo-500 rounded-[10px] flex items-center justify-center shrink-0">
                   <Zap size={16} className="text-white" />
                 </div>
                 <span className="font-bold text-[15px] text-gray-800 dark:text-white font-poppins-semibold whitespace-nowrap">
@@ -101,14 +101,14 @@ export default function Sidebar() {
           {!isMobile ? (
             <button
               onClick={() => setCollapsed((prev) => !prev)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer shrink-0"
+              className="size-8 flex items-center justify-center rounded-[10px] text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer shrink-0"
             >
               <Menu size={16} />
             </button>
           ) : (
             <button
               onClick={() => setMobileOpen(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer shrink-0"
+              className="size-8 flex items-center justify-center rounded-[10px] text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer shrink-0"
               style={{
                 opacity: showMobileSidebar ? 1 : 0,
                 pointerEvents: showMobileSidebar ? "auto" : "none",
@@ -131,7 +131,7 @@ export default function Sidebar() {
                 onClick={() => handleNavClick(label)}
                 title={isCollapsed ? label : undefined}
                 className={`
-                  w-full flex items-center rounded-xl
+                  w-full flex items-center rounded-[10px]
                   transition-colors duration-150 cursor-pointer
                   ${isCollapsed ? "justify-center p-3" : "gap-3 px-3 py-3"}
                   ${
@@ -150,7 +150,7 @@ export default function Sidebar() {
                       ? "opacity 80ms ease-in, max-width 300ms cubic-bezier(0.4, 0, 0.2, 1)"
                       : "opacity 200ms ease-out 180ms, max-width 300ms cubic-bezier(0.4, 0, 0.2, 1)",
                   }}
-                  className="text-sm font-medium whitespace-nowrap overflow-hidden"
+                  className="text-[14px] font-poppins-medium whitespace-nowrap overflow-hidden"
                 >
                   {label}
                 </span>
@@ -162,13 +162,13 @@ export default function Sidebar() {
         <div className="p-3 border-t border-gray-100 dark:border-gray-800 shrink-0">
           <div
             className={`
-              flex items-center rounded-xl
+              flex items-center rounded-[10px]
               hover:bg-gray-50 dark:hover:bg-gray-700
               transition-colors cursor-pointer
               ${isCollapsed ? "justify-center p-3" : "gap-3 px-3 py-2.5"}
             `}
           >
-            <div className="w-7 h-7 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+            <div className="size-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-[12px] font-poppins-bold shrink-0">
               A
             </div>
             <div
@@ -181,7 +181,7 @@ export default function Sidebar() {
               }}
               className="min-w-0 overflow-hidden"
             >
-              <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">Akshay</p>
+              <p className="text-[12px] font-poppins-semibold text-gray-700 dark:text-gray-200 truncate">Akshay</p>
               <p className="text-[10px] text-gray-400 truncate">akshay@findash.io</p>
             </div>
           </div>
@@ -190,12 +190,12 @@ export default function Sidebar() {
 
       {isMobile && !showMobileSidebar && (
         <div className="fixed top-4 left-4 z-50 flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-500 rounded-xl flex items-center justify-center">
+          <div className="size-8 bg-indigo-500 rounded-[10px] flex items-center justify-center">
             <Zap size={16} className="text-white" />
           </div>
           <button
             onClick={() => setMobileOpen(true)}
-            className="w-9 h-9 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-center shadow-sm text-gray-600 dark:text-gray-300 cursor-pointer transition-colors"
+            className="w-9 h-9 bg-white dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] flex items-center justify-center shadow-sm text-gray-600 dark:text-gray-300 cursor-pointer transition-colors"
           >
             <Menu size={16} />
           </button>
