@@ -1,3 +1,12 @@
+export const transactionCategories = [
+  "Salary",
+  "Freelance",
+  "Food",
+  "Travel",
+  "Bills",
+  "Shopping",
+];
+
 export const transactions = [
   {
     id: 1,

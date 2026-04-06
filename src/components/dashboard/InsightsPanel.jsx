@@ -1,31 +1,36 @@
-import { useApp } from "../../context/AppContext";
 import { TrendingUp, TrendingDown, Award, AlertCircle, Lightbulb } from "lucide-react";
-import { categoryColors } from "../../data/mockData";
+import { useApp } from "../../context/AppContext";
 
 function getInsights(transactions) {
-  // --- Spending by category ---
   const categoryTotals = {};
+
   transactions
-    .filter(t => t.type === "expense")
-    .forEach(t => {
-      categoryTotals[t.category] = (categoryTotals[t.category] || 0) + t.amount;
+    .filter((item) => item.type === "expense")
+    .forEach((item) => {
+      categoryTotals[item.category] = (categoryTotals[item.category] || 0) + item.amount;
     });
+
   const sortedCategories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
-  const topCategory   = sortedCategories[0] || ["None", 0];
+  const topCategory = sortedCategories[0] || ["None", 0];
   const lowestCategory = sortedCategories[sortedCategories.length - 1] || ["None", 0];
 
-  // --- Monthly totals ---
   const monthlyTotals = {};
-  transactions.forEach(t => {
-    const month = t.date.slice(0, 7); // "2024-01"
-    if (!monthlyTotals[month]) monthlyTotals[month] = { income: 0, expenses: 0 };
-    monthlyTotals[month][t.type === "income" ? "income" : "expenses"] += t.amount;
+
+  transactions.forEach((item) => {
+    const month = item.date.slice(0, 7);
+
+    if (!monthlyTotals[month]) {
+      monthlyTotals[month] = { income: 0, expenses: 0 };
+    }
+
+    monthlyTotals[month][item.type === "income" ? "income" : "expenses"] += item.amount;
   });
-  const months      = Object.keys(monthlyTotals).sort();
-  const lastMonth   = months[months.length - 1];
-  const prevMonth   = months[months.length - 2];
-  const lastData    = monthlyTotals[lastMonth]  || { income: 0, expenses: 0 };
-  const prevData    = monthlyTotals[prevMonth]  || { income: 0, expenses: 0 };
+
+  const months = Object.keys(monthlyTotals).sort();
+  const lastMonth = months.at(-1) ?? null;
+  const prevMonth = months.at(-2) ?? null;
+  const lastData = monthlyTotals[lastMonth] || { income: 0, expenses: 0 };
+  const prevData = monthlyTotals[prevMonth] || { income: 0, expenses: 0 };
   const expenseChange = prevData.expenses > 0
     ? (((lastData.expenses - prevData.expenses) / prevData.expenses) * 100).toFixed(1)
     : 0;
@@ -33,7 +38,7 @@ function getInsights(transactions) {
     ? (((lastData.income - lastData.expenses) / lastData.income) * 100).toFixed(1)
     : 0;
 
-  return { topCategory, lowestCategory, expenseChange, savingsRate, lastMonth, prevMonth };
+  return { expenseChange, lastMonth, lowestCategory, savingsRate, topCategory };
 }
 
 function InsightCard({ icon, label, value, sub, color }) {
@@ -53,28 +58,37 @@ function InsightCard({ icon, label, value, sub, color }) {
 
 export default function InsightsPanel() {
   const { transactions } = useApp();
-  const { topCategory, lowestCategory, expenseChange, savingsRate, lastMonth } = getInsights(transactions);
+  const { expenseChange, lastMonth, lowestCategory, savingsRate, topCategory } = getInsights(transactions);
 
-  const monthLabel = new Date(lastMonth + "-01").toLocaleString("en-IN", { month: "long", year: "numeric" });
+  const monthLabel = lastMonth
+    ? new Date(`${lastMonth}-01T00:00:00`).toLocaleString("en-IN", {
+        month: "long",
+        year: "numeric",
+      })
+    : "No data yet";
 
   const insights = [
     {
       icon: <Award size={16} className="text-amber-600" />,
       label: "Top Spending Category",
       value: topCategory[0],
-      sub: `₹${topCategory[1].toLocaleString("en-IN")} total spent`,
+      sub: `\u20b9${topCategory[1].toLocaleString("en-IN")} total spent`,
       color: "bg-amber-100 dark:bg-amber-900/30",
     },
     {
-      icon: Number(expenseChange) > 0
-        ? <TrendingUp size={16} className="text-red-500" />
-        : <TrendingDown size={16} className="text-emerald-500" />,
+      icon:
+        Number(expenseChange) > 0 ? (
+          <TrendingUp size={16} className="text-red-500" />
+        ) : (
+          <TrendingDown size={16} className="text-emerald-500" />
+        ),
       label: "Expense Change",
       value: `${expenseChange > 0 ? "+" : ""}${expenseChange}% vs prev month`,
       sub: `In ${monthLabel}`,
-      color: Number(expenseChange) > 0
-        ? "bg-red-100 dark:bg-red-900/30"
-        : "bg-emerald-100 dark:bg-emerald-900/30",
+      color:
+        Number(expenseChange) > 0
+          ? "bg-red-100 dark:bg-red-900/30"
+          : "bg-emerald-100 dark:bg-emerald-900/30",
     },
     {
       icon: <Lightbulb size={16} className="text-indigo-500" />,
@@ -87,7 +101,7 @@ export default function InsightsPanel() {
       icon: <AlertCircle size={16} className="text-purple-500" />,
       label: "Lowest Spending",
       value: lowestCategory[0],
-      sub: `₹${lowestCategory[1].toLocaleString("en-IN")} total spent`,
+      sub: `\u20b9${lowestCategory[1].toLocaleString("en-IN")} total spent`,
       color: "bg-purple-100 dark:bg-purple-900/30",
     },
   ];
@@ -104,8 +118,8 @@ export default function InsightsPanel() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {insights.map(ins => (
-          <InsightCard key={ins.label} {...ins} />
+        {insights.map((item) => (
+          <InsightCard key={item.label} {...item} />
         ))}
       </div>
     </div>

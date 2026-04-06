@@ -1,24 +1,27 @@
 import { Wallet, TrendingUp, TrendingDown, PiggyBank } from "lucide-react";
-import SummaryCard from "../components/dashboard/SummaryCard";
 import BalanceTrend from "../components/dashboard/BalanceTrend";
+import InsightsPanel from "../components/dashboard/InsightsPanel";
 import SpendingChart from "../components/dashboard/SpendingChart";
+import SummaryCard from "../components/dashboard/SummaryCard";
 import TransactionsTable from "../components/dashboard/TransactionsTable";
 import { useApp } from "../context/AppContext";
-import InsightsPanel from "../components/dashboard/InsightsPanel";
-import { transactions } from "../data/mockData";
 
-// Calculate summary numbers from real data
-function getSummary() {
-  const income   = transactions.filter(t => t.type === "income").reduce((s, t) => s + t.amount, 0);
-  const expenses = transactions.filter(t => t.type === "expense").reduce((s, t) => s + t.amount, 0);
-  const balance  = income - expenses;
-  const savings  = Math.round(balance * 0.6);
+function getTotals(items) {
+  const income = items
+    .filter((item) => item.type === "income")
+    .reduce((sum, item) => sum + item.amount, 0);
+  const expenses = items
+    .filter((item) => item.type === "expense")
+    .reduce((sum, item) => sum + item.amount, 0);
+  const balance = income - expenses;
+  const savings = Math.round(balance * 0.6);
+
   return { income, expenses, balance, savings };
 }
 
 export default function Dashboard() {
   const { transactions } = useApp();
-  const { income, expenses, balance, savings } = getSummary(transactions);
+  const { income, expenses, balance, savings } = getTotals(transactions);
 
   const cards = [
     {
@@ -61,11 +64,9 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-6">
-
-      {/* Welcome row */}
       <div>
         <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white font-poppins-bold">
-          Good morning, Akshay 👋
+          {"Good morning, Akshay \u{1F44B}"}
         </h1>
         <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
           Here's what's happening with your finances today.
@@ -87,10 +88,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-       <TransactionsTable />
-
-       <InsightsPanel />
-
+      <TransactionsTable />
+      <InsightsPanel />
     </div>
   );
 }

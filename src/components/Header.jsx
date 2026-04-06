@@ -1,36 +1,36 @@
+import { useEffect, useRef, useState } from "react";
 import { Bell, Moon, Sun, LogOut } from "lucide-react";
-import { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 
 export default function Header() {
-  const { toggleTheme, isDark, role, toggleRole } = useApp();
-  const [openMenu, setOpenMenu] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const { activePage, isDark, isMobile, role, toggleRole, toggleTheme } = useApp();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+    if (!menuOpen) {
+      return undefined;
+    }
 
-  useEffect(() => {
-    const handleClick = (e) => {
-      if (!e.target.closest(".profile-menu")) setOpenMenu(false);
+    const handleClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
     };
+
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
-  }, []);
+  }, [menuOpen]);
 
   return (
     <div className="flex items-center justify-between px-4 md:px-6 py-3 pl-16 md:pl-6 bg-white dark:bg-[#111827] border-b border-gray-200 dark:border-gray-700">
       <div className="text-lg font-semibold pl-12 md:pl-0 font-poppins-semibold">
-        Dashboard
+        {activePage}
       </div>
 
       <div className="flex items-center gap-3 relative">
         <button
-          onClick={(e) => toggleTheme(e)}
+          onClick={toggleTheme}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors"
         >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
@@ -63,26 +63,26 @@ export default function Header() {
           </>
         )}
 
-        <div className="relative profile-menu">
+        <div ref={menuRef} className="relative">
           {isMobile && (
             <div
-              onClick={() => setOpenMenu(!openMenu)}
+              onClick={() => setMenuOpen((prev) => !prev)}
               className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-bold cursor-pointer"
             >
               A
             </div>
           )}
 
-          {openMenu && isMobile && (
+          {menuOpen && isMobile && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1F2937] rounded-xl shadow-lg p-2 z-50 border border-gray-100 dark:border-gray-700">
               <div
-                onClick={(e) => toggleTheme(e)}
+                onClick={toggleTheme}
                 className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer"
               >
                 Toggle Theme
               </div>
               <div
-                onClick={(e) => toggleRole(e)}
+                onClick={toggleRole}
                 className="px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg cursor-pointer"
               >
                 Role: {role}

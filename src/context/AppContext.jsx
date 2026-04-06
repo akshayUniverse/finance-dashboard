@@ -1,24 +1,65 @@
-import { createContext, useContext, useState, useCallback, useEffect } from "react";
-import { transactions as initialTransactions } from "../data/mockData";
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import {
+  categoryColors,
+  transactions as seedTransactions,
+} from "../data/mockData";
 
-const AppContext = createContext();
+const AppContext = createContext(null);
+const MOBILE_QUERY = "(max-width: 767px)";
+const validTypes = new Set(["income", "expense"]);
+
+function cleanText(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, 80);
+}
+
+function isValidDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const date = new Date(`${value}T00:00:00`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
 
 export function AppProvider({ children }) {
-  const [darkMode, setDarkMode] = useState(true);
+  const [isDark, setIsDark] = useState(true);
   const [role, setRole] = useState("Viewer");
-  const [transactions, setTransactions] = useState(initialTransactions);
-   const [activePage, setActivePage]     = useState("Dashboard");
-
-   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+  const [transactions, setTransactions] = useState(seedTransactions);
+  const [activePage, setActivePage] = useState("Dashboard");
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
     }
-  }, [darkMode]);
+
+    return window.matchMedia(MOBILE_QUERY).matches;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+  }, [isDark]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const media = window.matchMedia(MOBILE_QUERY);
+    const syncViewport = (event) => setIsMobile(event.matches);
+
+    if (media.addEventListener) {
+      media.addEventListener("change", syncViewport);
+      return () => media.removeEventListener("change", syncViewport);
+    }
+
+    media.addListener(syncViewport);
+    return () => media.removeListener(syncViewport);
+  }, []);
 
   const toggleTheme = useCallback((event) => {
-    // Get button center position on screen
     const rect = event?.currentTarget?.getBoundingClientRect?.();
     const x = rect
       ? Math.round(rect.left + rect.width / 2)
@@ -27,18 +68,16 @@ export function AppProvider({ children }) {
       ? Math.round(rect.top + rect.height / 2)
       : window.innerHeight / 2;
 
-    // Tell CSS where the ripple starts
     document.documentElement.style.setProperty("--ripple-x", `${x}px`);
     document.documentElement.style.setProperty("--ripple-y", `${y}px`);
 
-    // If browser supports View Transitions
     if (!document.startViewTransition) {
-      setDarkMode((prev) => !prev);
+      setIsDark((prev) => !prev);
       return;
     }
 
     document.startViewTransition(() => {
-      setDarkMode((prev) => !prev);
+      setIsDark((prev) => !prev);
     });
   }, []);
 
@@ -46,29 +85,48 @@ export function AppProvider({ children }) {
     setRole((prev) => (prev === "Viewer" ? "Admin" : "Viewer"));
   };
 
-  const addTransaction = (tx) => {
-    setTransactions((prev) => [{ ...tx, id: Date.now() }, ...prev]);
-  };
+  const addTransaction = (nextTx) => {
+    const description = cleanText(nextTx.description);
+    const amount = Number(nextTx.amount);
 
-  const editTransaction = (id, updated) => {
-    setTransactions((prev) =>
-      prev.map((tx) => (tx.id === id ? { ...tx, ...updated } : tx)),
-    );
+    if (
+      !description ||
+      !Number.isFinite(amount) ||
+      amount <= 0 ||
+      !validTypes.has(nextTx.type) ||
+      !Object.hasOwn(categoryColors, nextTx.category) ||
+      !isValidDate(nextTx.date)
+    ) {
+      return false;
+    }
+
+    setTransactions((prev) => [
+      {
+        id: Date.now(),
+        amount,
+        category: nextTx.category,
+        date: nextTx.date,
+        description,
+        type: nextTx.type,
+      },
+      ...prev,
+    ]);
+
+    return true;
   };
 
   return (
     <AppContext.Provider
       value={{
-        darkMode,
-        isDark: darkMode,
-        toggleTheme,
-        role,
-        toggleRole,
-        transactions,
-        addTransaction,
-        editTransaction,
         activePage,
+        addTransaction,
+        isDark,
+        isMobile,
+        role,
         setActivePage,
+        toggleRole,
+        toggleTheme,
+        transactions,
       }}
     >
       {children}
@@ -77,5 +135,11 @@ export function AppProvider({ children }) {
 }
 
 export function useApp() {
-  return useContext(AppContext);
+  const context = useContext(AppContext);
+
+  if (!context) {
+    throw new Error("useApp must be used inside AppProvider");
+  }
+
+  return context;
 }
