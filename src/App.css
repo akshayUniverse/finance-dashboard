@@ -103,6 +103,18 @@ body {
     @apply bg-gray-50 dark:bg-[#1F2937] rounded-[10px];
   }
 
+  .dashboard-stack {
+    @apply flex flex-col gap-4;
+  }
+
+  .dashboard-grid {
+    @apply grid gap-4;
+  }
+
+  .panel-stack {
+    @apply flex flex-col gap-4;
+  }
+
   .tooltip-surface {
     @apply bg-white dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-[10px] p-3 shadow-lg text-[14px];
   }
@@ -155,8 +167,40 @@ body {
     @apply min-h-[168px];
   }
 
+  .metric-card-stack {
+    @apply flex flex-col gap-4;
+  }
+
   .insight-card-shell {
-    @apply flex items-start gap-3 p-4 rounded-[14px] min-h-[168px] border border-gray-200/70 dark:border-gray-700/60 bg-gray-50 dark:bg-[#1F2937];
+    @apply relative overflow-hidden rounded-[14px] min-h-[168px] p-4 border border-gray-200/70 dark:border-gray-700/60 bg-gray-50 dark:bg-[#1F2937] shadow-sm;
+  }
+
+  .insight-card-top {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .insight-icon-chip {
+    @apply size-11 rounded-[12px] flex items-center justify-center shrink-0 border border-white/40 dark:border-white/10 shadow-sm;
+  }
+
+  .insight-kicker {
+    @apply text-[11px] uppercase tracking-[0.14em] text-gray-400 dark:text-gray-500 font-poppins-semibold;
+  }
+
+  .insight-value {
+    @apply text-[20px] md:text-[22px] font-poppins-bold text-gray-900 dark:text-white leading-tight;
+  }
+
+  .insight-foot {
+    @apply flex items-end justify-between gap-4 pt-4 border-t border-gray-200/80 dark:border-gray-700/70;
+  }
+
+  .insight-note {
+    @apply text-[12px] text-gray-500 dark:text-gray-400 leading-5;
+  }
+
+  .insight-meta-pill {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-poppins-semibold bg-white/80 dark:bg-white/8 text-gray-600 dark:text-gray-300 border border-gray-200/80 dark:border-white/10;
   }
 
   .metric-card-light {

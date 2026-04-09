@@ -20,7 +20,7 @@ export default function SummaryCard({
 
   return (
     <div
-      className={`dashboard-card-size relative overflow-hidden rounded-[14px] p-5 flex flex-col gap-3 ${
+      className={`dashboard-card-size metric-card-stack relative overflow-hidden rounded-[14px] p-5 ${
         isDark ? `${gradient} metric-card-dark` : `${lightTone} metric-card-light`
       }`}
     >

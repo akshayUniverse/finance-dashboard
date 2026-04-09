@@ -71,7 +71,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="dashboard-stack">
       <div>
         <h1 className="page-title">
           {"Good morning, Akshay \u{1F44B}"}
@@ -81,13 +81,13 @@ export default function Dashboard() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="dashboard-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
           <SummaryCard key={card.title} {...card} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="dashboard-grid grid-cols-1 lg:grid-cols-4">
         <div className="lg:col-span-3 min-h-[280px]">
           <BalanceTrend />
         </div>

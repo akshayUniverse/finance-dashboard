@@ -35,7 +35,7 @@ export default function BalanceTrend() {
   const rangeLabel = getTrendRangeLabel(transactions);
 
   return (
-    <div className="surface-panel flex flex-col gap-4 h-full">
+    <div className="surface-panel panel-stack h-full">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h2 className="section-title">Balance Trend</h2>

@@ -24,7 +24,7 @@ export default function SpendingChart() {
   const data = getSpendingBreakdown(transactions);
 
   return (
-    <div className="surface-panel flex flex-col gap-4 h-full">
+    <div className="surface-panel panel-stack h-full">
       <div>
         <h2 className="section-title">Spending Breakdown</h2>
         <p className="section-subtitle">By category</p>

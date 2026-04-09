@@ -72,7 +72,7 @@ export default function TransactionsTable() {
 
   return (
     <>
-      <div className="surface-panel flex flex-col gap-4">
+      <div className="surface-panel panel-stack">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="section-title">Transactions</h2>
