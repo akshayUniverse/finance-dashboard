@@ -103,6 +103,10 @@ body {
     @apply bg-gray-50 dark:bg-[#1F2937] rounded-[10px];
   }
 
+  .tooltip-surface {
+    @apply bg-white dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-[10px] p-3 shadow-lg text-[14px];
+  }
+
   .page-title {
     @apply text-[20px] md:text-[24px] text-gray-800 dark:text-white font-poppins-bold;
   }
@@ -129,6 +133,42 @@ body {
 
   .caption-text {
     @apply text-[12px] text-gray-400 dark:text-gray-500;
+  }
+
+  .field-shell {
+    @apply bg-gray-50 dark:bg-[#1F2937] border border-gray-200 dark:border-gray-700 rounded-[10px];
+  }
+
+  .field-control {
+    @apply bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors;
+  }
+
+  .table-head-cell {
+    @apply text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium;
+  }
+
+  .tag-pill {
+    @apply px-2.5 py-1 rounded-full text-[12px] font-poppins-medium;
+  }
+
+  .dashboard-card-size {
+    @apply min-h-[168px];
+  }
+
+  .insight-card-shell {
+    @apply flex items-start gap-3 p-4 rounded-[14px] min-h-[168px] border border-gray-200/70 dark:border-gray-700/60 bg-gray-50 dark:bg-[#1F2937];
+  }
+
+  .metric-card-light {
+    @apply border border-gray-200 bg-white text-gray-900 shadow-sm;
+  }
+
+  .metric-card-dark {
+    @apply text-white;
+  }
+
+  .icon-chip {
+    @apply size-10 rounded-[10px] flex items-center justify-center;
   }
 }
 

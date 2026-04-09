@@ -2,11 +2,12 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { transactionCategories } from "../../data/mockData";
+import { getTransactionPrimaryText } from "../../utils/finance";
 
 const validTypes = new Set(["expense", "income"]);
 const defaultValues = {
   amount: "",
-  category: "Food",
+  category: transactionCategories[0],
   date: "",
   description: "",
   type: "expense",
@@ -30,9 +31,9 @@ export default function AddTransactionModal({ initialValues = defaultValues, mod
   const isEditing = mode === "edit";
   const [values, setValues] = useState({
     amount: initialValues.amount ?? "",
-    category: initialValues.category ?? "Food",
+    category: initialValues.category ?? transactionCategories[0],
     date: initialValues.date ?? "",
-    description: initialValues.description ?? "",
+    description: getTransactionPrimaryText(initialValues),
     id: initialValues.id,
     type: initialValues.type ?? "expense",
   });
@@ -113,7 +114,7 @@ export default function AddTransactionModal({ initialValues = defaultValues, mod
                 name="type"
                 value={values.type}
                 onChange={handleChange}
-                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+                className="field-control"
               >
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
@@ -126,7 +127,7 @@ export default function AddTransactionModal({ initialValues = defaultValues, mod
                 name="category"
                 value={values.category}
                 onChange={handleChange}
-                className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+                className="field-control"
               >
                 {transactionCategories.map((category) => (
                   <option key={category} value={category}>
@@ -149,7 +150,7 @@ export default function AddTransactionModal({ initialValues = defaultValues, mod
               value={values.amount}
               onChange={handleChange}
               placeholder="e.g. 5000"
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              className="field-control"
             />
           </div>
 
@@ -160,20 +161,20 @@ export default function AddTransactionModal({ initialValues = defaultValues, mod
               name="date"
               value={values.date}
               onChange={handleChange}
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              className="field-control"
             />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="label-text">Description</label>
+            <label className="label-text">Title / Description</label>
             <input
               type="text"
               name="description"
               maxLength={80}
               value={values.description}
               onChange={handleChange}
-              placeholder="e.g. Monthly groceries"
-              className="bg-gray-50 dark:bg-[#111827] border border-gray-200 dark:border-gray-700 rounded-[10px] px-3 py-2.5 text-[14px] text-gray-800 dark:text-white outline-none focus:border-indigo-500 transition-colors"
+              placeholder="e.g. Payroll transfer"
+              className="field-control"
             />
           </div>
 

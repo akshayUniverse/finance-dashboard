@@ -4,14 +4,14 @@ import { formatCurrency, getInsights } from "../../utils/finance";
 
 function InsightCard({ icon, label, value, sub, color }) {
   return (
-    <div className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-[#1F2937] rounded-[10px]">
+    <div className="insight-card-shell">
       <div className={`size-9 rounded-[10px] flex items-center justify-center shrink-0 ${color}`}>
         {icon}
       </div>
-      <div className="min-w-0">
-        <p className="text-[12px] text-gray-500 dark:text-gray-400 font-medium">{label}</p>
-        <p className="text-[14px] font-poppins-bold text-gray-800 dark:text-white mt-0.5 truncate">{value}</p>
-        {sub && <p className="text-[12px] text-gray-400 dark:text-gray-500 mt-0.5">{sub}</p>}
+      <div className="min-w-0 flex-1">
+        <p className="label-text font-medium">{label}</p>
+        <p className="body-text font-poppins-bold mt-0.5 leading-5">{value}</p>
+        {sub && <p className="caption-text mt-1">{sub}</p>}
       </div>
     </div>
   );

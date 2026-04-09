@@ -1,5 +1,12 @@
 const LOCALE = "en-IN";
 
+function cleanText(value, maxLength = 120) {
+  return String(value ?? "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .slice(0, maxLength);
+}
+
 function sortTransactionsByDate(items) {
   return [...items].sort((a, b) => a.date.localeCompare(b.date));
 }
@@ -21,6 +28,61 @@ export function formatTransactionDate(value) {
     month: "short",
     year: "numeric",
   });
+}
+
+export function normalizeTransaction(item) {
+  if (!item) {
+    return null;
+  }
+
+  const title = cleanText(item.title || item.description || item.note || "Untitled transaction", 80);
+  const note = cleanText(item.note || "", 120);
+  const counterparty = cleanText(item.counterparty || "", 80);
+
+  return {
+    ...item,
+    amount: Number(item.amount || 0),
+    category: cleanText(item.category || "Operations", 40),
+    counterparty,
+    date: item.date,
+    description: title,
+    id: item.id,
+    note,
+    title,
+    type: item.type,
+  };
+}
+
+export function normalizeTransactions(items) {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items
+    .map(normalizeTransaction)
+    .filter(Boolean);
+}
+
+export function getTransactionPrimaryText(item) {
+  return cleanText(item?.title || item?.description || item?.note || "Untitled transaction", 80);
+}
+
+export function getTransactionSecondaryText(item) {
+  return cleanText(item?.note || item?.counterparty || "", 120);
+}
+
+export function getTransactionSearchText(item) {
+  return [
+    item?.title,
+    item?.description,
+    item?.note,
+    item?.counterparty,
+    item?.category,
+    item?.type,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
 }
 
 export function getMonthlySeries(transactions) {

@@ -4,10 +4,13 @@ import {
   categoryColors,
   transactions as seedTransactions,
 } from "../data/mockData";
+import { normalizeTransaction, normalizeTransactions } from "../utils/finance";
 
 const AppContext = createContext(null);
 const MOBILE_QUERY = "(max-width: 767px)";
+const DATA_VERSION = "2026-finance-seed-v2";
 const STORAGE_KEYS = {
+  dataVersion: "finance-dashboard-data-version",
   role: "finance-dashboard-role",
   theme: "finance-dashboard-theme",
   transactions: "finance-dashboard-transactions",
@@ -58,7 +61,17 @@ function isValidDate(value) {
 export function AppProvider({ children }) {
   const [isDark, setIsDark] = useState(() => readStorage(STORAGE_KEYS.theme, true));
   const [role, setRole] = useState(() => readStorage(STORAGE_KEYS.role, "Viewer"));
-  const [transactions, setTransactions] = useState(() => readStorage(STORAGE_KEYS.transactions, seedTransactions));
+  const [transactions, setTransactions] = useState(() => {
+    const storedVersion = readStorage(STORAGE_KEYS.dataVersion, null);
+    const fallbackTransactions = normalizeTransactions(seedTransactions);
+
+    if (storedVersion !== DATA_VERSION) {
+      return fallbackTransactions;
+    }
+
+    const storedTransactions = readStorage(STORAGE_KEYS.transactions, fallbackTransactions);
+    return normalizeTransactions(storedTransactions);
+  });
   const [activePage, setActivePage] = useState("Dashboard");
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === "undefined") {
@@ -83,6 +96,10 @@ export function AppProvider({ children }) {
   useEffect(() => {
     writeStorage(STORAGE_KEYS.transactions, transactions);
   }, [transactions]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.dataVersion, DATA_VERSION);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -128,28 +145,28 @@ export function AppProvider({ children }) {
   };
 
   const addTransaction = (nextTx) => {
-    const description = cleanText(nextTx.description);
-    const amount = Number(nextTx.amount);
+    const normalizedTx = normalizeTransaction({
+      ...nextTx,
+      description: cleanText(nextTx.description),
+    });
+    const amount = Number(normalizedTx.amount);
 
     if (
-      !description ||
+      !normalizedTx.description ||
       !Number.isFinite(amount) ||
       amount <= 0 ||
-      !validTypes.has(nextTx.type) ||
-      !Object.hasOwn(categoryColors, nextTx.category) ||
-      !isValidDate(nextTx.date)
+      !validTypes.has(normalizedTx.type) ||
+      !Object.hasOwn(categoryColors, normalizedTx.category) ||
+      !isValidDate(normalizedTx.date)
     ) {
       return false;
     }
 
     setTransactions((prev) => [
       {
-        id: Date.now(),
+        ...normalizedTx,
+        id: nextTx.id || `txn-${Date.now()}`,
         amount,
-        category: nextTx.category,
-        date: nextTx.date,
-        description,
-        type: nextTx.type,
       },
       ...prev,
     ]);
@@ -158,17 +175,20 @@ export function AppProvider({ children }) {
   };
 
   const updateTransaction = (nextTx) => {
-    const description = cleanText(nextTx.description);
-    const amount = Number(nextTx.amount);
+    const normalizedTx = normalizeTransaction({
+      ...nextTx,
+      description: cleanText(nextTx.description),
+    });
+    const amount = Number(normalizedTx.amount);
 
     if (
-      !nextTx.id ||
-      !description ||
+      !normalizedTx.id ||
+      !normalizedTx.description ||
       !Number.isFinite(amount) ||
       amount <= 0 ||
-      !validTypes.has(nextTx.type) ||
-      !Object.hasOwn(categoryColors, nextTx.category) ||
-      !isValidDate(nextTx.date)
+      !validTypes.has(normalizedTx.type) ||
+      !Object.hasOwn(categoryColors, normalizedTx.category) ||
+      !isValidDate(normalizedTx.date)
     ) {
       return false;
     }
@@ -176,7 +196,7 @@ export function AppProvider({ children }) {
     let updated = false;
 
     setTransactions((prev) => prev.map((item) => {
-      if (item.id !== nextTx.id) {
+      if (item.id !== normalizedTx.id) {
         return item;
       }
 
@@ -184,11 +204,8 @@ export function AppProvider({ children }) {
 
       return {
         ...item,
+        ...normalizedTx,
         amount,
-        category: nextTx.category,
-        date: nextTx.date,
-        description,
-        type: nextTx.type,
       };
     }));
 
