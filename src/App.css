@@ -15,7 +15,7 @@ html.dark {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
 }
 
 @layer base {
@@ -95,40 +95,40 @@ body {
 }
 
 @layer utilities {
-  .container-padding {
-    @apply px-10 md:px-18 2xl:px-18 ;
-  }
-  .section-block-padding {
-    @apply py-10 md:py-16 2xl:py-22;
+  .surface-panel {
+    @apply bg-white dark:bg-[#111827] rounded-[14px] p-5;
   }
 
-  .section-block-top {
-    @apply pt-10 md:pt-16 2xl:pt-22;
+  .surface-panel-muted {
+    @apply bg-gray-50 dark:bg-[#1F2937] rounded-[10px];
   }
 
-  .section-block-bottom {
-    @apply pb-10 md:pb-16 2xl:pb-22;
+  .page-title {
+    @apply text-[20px] md:text-[24px] text-gray-800 dark:text-white font-poppins-bold;
   }
 
-  .title-content-gap {
-    @apply mb-6 md:mb-8 2xl:mb-10;
-  }
-  .fl1 {
-    @apply text-[12px] sm:text-[10px] md:text-[16px] font-poppins-semibold text-black;
-  }
-  .fl2 {
-    @apply text-[12px] md:text-[14px] font-poppins-medium ;
-  }
-  .fl3 {
-    @apply text-[18px] md:text-[26px] font-poppins-medium text-black;
+  .page-subtitle {
+    @apply text-[14px] text-gray-500 dark:text-gray-400 mt-1;
   }
 
-  .fl4 {
-    @apply text-[10px] lg:text-[12px] font-poppins text-black;
+  .section-title {
+    @apply text-gray-800 dark:text-white font-poppins-semibold;
   }
 
-  .fl5 {
-    @apply text-[6px] md:text-[10px] font-poppins-medium;
+  .section-subtitle {
+    @apply text-[12px] text-gray-500 dark:text-gray-400 mt-0.5;
+  }
+
+  .label-text {
+    @apply text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium;
+  }
+
+  .body-text {
+    @apply text-[14px] text-gray-700 dark:text-gray-200;
+  }
+
+  .caption-text {
+    @apply text-[12px] text-gray-400 dark:text-gray-500;
   }
 }
 

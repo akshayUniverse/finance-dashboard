@@ -4,6 +4,13 @@ import { useApp } from "../../context/AppContext";
 import { transactionCategories } from "../../data/mockData";
 
 const validTypes = new Set(["expense", "income"]);
+const defaultValues = {
+  amount: "",
+  category: "Food",
+  date: "",
+  description: "",
+  type: "expense",
+};
 
 function cleanText(value) {
   return value.trim().replace(/\s+/g, " ");
@@ -18,14 +25,16 @@ function isValidDate(value) {
   return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
-export default function AddTransactionModal({ onClose }) {
-  const { addTransaction } = useApp();
+export default function AddTransactionModal({ initialValues = defaultValues, mode = "create", onClose }) {
+  const { addTransaction, updateTransaction } = useApp();
+  const isEditing = mode === "edit";
   const [values, setValues] = useState({
-    amount: "",
-    category: "Food",
-    date: "",
-    description: "",
-    type: "expense",
+    amount: initialValues.amount ?? "",
+    category: initialValues.category ?? "Food",
+    date: initialValues.date ?? "",
+    description: initialValues.description ?? "",
+    id: initialValues.id,
+    type: initialValues.type ?? "expense",
   });
   const [error, setError] = useState("");
 
@@ -65,9 +74,10 @@ export default function AddTransactionModal({ onClose }) {
       return;
     }
 
-    const added = addTransaction({ ...nextTx, amount });
-    if (!added) {
-      setError("Couldn't add transaction. Check the form values.");
+    const action = isEditing ? updateTransaction : addTransaction;
+    const saved = action({ ...nextTx, amount });
+    if (!saved) {
+      setError(`Couldn't ${isEditing ? "update" : "add"} transaction. Check the form values.`);
       return;
     }
 
@@ -85,7 +95,7 @@ export default function AddTransactionModal({ onClose }) {
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-[18px] font-bold text-gray-800 dark:text-white font-poppins-semibold">
-            Add Transaction
+            {isEditing ? "Edit Transaction" : "Add Transaction"}
           </h2>
           <button
             onClick={onClose}
@@ -98,7 +108,7 @@ export default function AddTransactionModal({ onClose }) {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
-              <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Type</label>
+              <label className="label-text">Type</label>
               <select
                 name="type"
                 value={values.type}
@@ -111,7 +121,7 @@ export default function AddTransactionModal({ onClose }) {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Category</label>
+              <label className="label-text">Category</label>
               <select
                 name="category"
                 value={values.category}
@@ -128,7 +138,7 @@ export default function AddTransactionModal({ onClose }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">
+            <label className="label-text">
               {"Amount (\u20b9)"}
             </label>
             <input
@@ -144,7 +154,7 @@ export default function AddTransactionModal({ onClose }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Date</label>
+            <label className="label-text">Date</label>
             <input
               type="date"
               name="date"
@@ -155,7 +165,7 @@ export default function AddTransactionModal({ onClose }) {
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[12px] text-gray-500 dark:text-gray-400 font-poppins-medium">Description</label>
+            <label className="label-text">Description</label>
             <input
               type="text"
               name="description"
@@ -184,7 +194,7 @@ export default function AddTransactionModal({ onClose }) {
               onClick={handleSubmit}
               className="flex-1 py-2.5 rounded-[10px] bg-indigo-500 hover:bg-indigo-600 text-white text-[14px] font-semibold transition-colors"
             >
-              Add Transaction
+              {isEditing ? "Save Changes" : "Add Transaction"}
             </button>
           </div>
         </div>

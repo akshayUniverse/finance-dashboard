@@ -1,8 +1,9 @@
 import { cloneElement, useState } from "react";
-import { Search, ArrowUpDown, Plus, ArrowUp, ArrowDown } from "lucide-react";
+import { Search, ArrowUpDown, Plus, ArrowUp, ArrowDown, SquarePen } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { categoryColors } from "../../data/mockData";
 import AddTransactionModal from "./AddTransactionModal";
+import { formatCurrency, formatTransactionDate } from "../../utils/finance";
 
 const sortIcons = {
   amount: <ArrowUpDown size={14} className="text-gray-400" />,
@@ -11,11 +12,13 @@ const sortIcons = {
 
 export default function TransactionsTable() {
   const { transactions, role } = useApp();
+  const isAdmin = role === "Admin";
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingTx, setEditingTx] = useState(null);
   const searchTerm = query.trim().toLowerCase();
 
   const filteredRows = transactions.filter((tx) => {
@@ -65,18 +68,14 @@ export default function TransactionsTable() {
 
   return (
     <>
-      <div className="bg-white dark:bg-[#111827] rounded-[14px] p-5 flex flex-col gap-4">
+      <div className="surface-panel flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-gray-800 dark:text-white font-poppins-semibold">
-              Transactions
-            </h2>
-            <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">
-              {rows.length} records found
-            </p>
+            <h2 className="section-title">Transactions</h2>
+            <p className="section-subtitle">{rows.length} records found</p>
           </div>
 
-          {role === "Admin" && (
+          {isAdmin && (
             <button
               onClick={() => setModalOpen(true)}
               className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white text-[14px] px-4 py-2 rounded-[10px] transition-colors font-poppins-medium"
@@ -137,9 +136,16 @@ export default function TransactionsTable() {
                 <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium">
                   Type
                 </th>
+                {isAdmin && (
+                  <th className="text-left px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium">
+                    Actions
+                  </th>
+                )}
                 <th
                   onClick={() => toggleSort("amount")}
-                  className="text-right px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium cursor-pointer hover:text-indigo-500 transition-colors rounded-r-xl"
+                  className={`text-right px-4 py-3 text-gray-500 dark:text-gray-400 font-poppins-medium cursor-pointer hover:text-indigo-500 transition-colors ${
+                    isAdmin ? "" : "rounded-r-xl"
+                  }`}
                 >
                   <div className="flex items-center justify-end gap-1">
                     Amount {getSortIcon("amount")}
@@ -150,7 +156,7 @@ export default function TransactionsTable() {
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
               {rows.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-12 text-gray-400 dark:text-gray-500">
+                  <td colSpan={isAdmin ? 6 : 5} className="text-center py-12 text-gray-400 dark:text-gray-500">
                     <p className="text-[24px] mb-2">{"\u{1F50D}"}</p>
                     <p className="font-poppins-medium">No transactions found</p>
                     <p className="text-[12px] mt-1">Try changing your search or filter</p>
@@ -160,11 +166,7 @@ export default function TransactionsTable() {
                 rows.map((tx) => (
                   <tr key={tx.id} className="hover:bg-gray-50 dark:hover:bg-[#1F2937] transition-colors">
                     <td className="px-4 py-3.5 text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                      {new Date(tx.date).toLocaleDateString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {formatTransactionDate(tx.date)}
                     </td>
                     <td className="px-4 py-3.5 text-gray-800 dark:text-gray-200 font-poppins-medium">
                       {tx.description}
@@ -188,6 +190,17 @@ export default function TransactionsTable() {
                         {tx.type}
                       </span>
                     </td>
+                    {isAdmin && (
+                      <td className="px-4 py-3.5">
+                        <button
+                          onClick={() => setEditingTx(tx)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[10px] bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-300 text-[12px] font-poppins-medium hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors"
+                        >
+                          <SquarePen size={13} />
+                          Edit
+                        </button>
+                      </td>
+                    )}
                     <td
                       className={`px-4 py-3.5 text-right font-poppins-bold whitespace-nowrap ${
                         tx.type === "income"
@@ -196,8 +209,7 @@ export default function TransactionsTable() {
                       }`}
                     >
                       {tx.type === "income" ? "+" : "-"}
-                      {"\u20b9"}
-                      {tx.amount.toLocaleString("en-IN")}
+                      {formatCurrency(tx.amount)}
                     </td>
                   </tr>
                 ))
@@ -208,6 +220,13 @@ export default function TransactionsTable() {
       </div>
 
       {modalOpen && <AddTransactionModal onClose={() => setModalOpen(false)} />}
+      {editingTx && (
+        <AddTransactionModal
+          initialValues={editingTx}
+          mode="edit"
+          onClose={() => setEditingTx(null)}
+        />
+      )}
     </>
   );
 }

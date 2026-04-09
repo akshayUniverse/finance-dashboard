@@ -5,70 +5,58 @@ import SpendingChart from "../components/dashboard/SpendingChart";
 import SummaryCard from "../components/dashboard/SummaryCard";
 import TransactionsTable from "../components/dashboard/TransactionsTable";
 import { useApp } from "../context/AppContext";
-
-function getTotals(items) {
-  const income = items
-    .filter((item) => item.type === "income")
-    .reduce((sum, item) => sum + item.amount, 0);
-  const expenses = items
-    .filter((item) => item.type === "expense")
-    .reduce((sum, item) => sum + item.amount, 0);
-  const balance = income - expenses;
-  const savings = Math.round(balance * 0.6);
-
-  return { income, expenses, balance, savings };
-}
+import { getSummaryMetrics } from "../utils/finance";
 
 export default function Dashboard() {
   const { transactions } = useApp();
-  const { income, expenses, balance, savings } = getTotals(transactions);
+  const { income, expenses, balance, savings, changes, latestMonthLabel } = getSummaryMetrics(transactions);
 
   const cards = [
     {
       title: "Total Balance",
       amount: balance,
-      change: "+8.2%",
-      changeLabel: "vs last month",
+      change: changes.balance.display,
+      changeLabel: changes.balance.label,
       icon: <Wallet size={20} />,
       gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700",
-      positive: true,
+      positive: changes.balance.positive,
     },
     {
       title: "Total Income",
       amount: income,
-      change: "+5.1%",
-      changeLabel: "vs last month",
+      change: changes.income.display,
+      changeLabel: changes.income.label,
       icon: <TrendingUp size={20} />,
       gradient: "bg-gradient-to-br from-emerald-400 to-emerald-600",
-      positive: true,
+      positive: changes.income.positive,
     },
     {
       title: "Total Expenses",
       amount: expenses,
-      change: "+2.4%",
-      changeLabel: "vs last month",
+      change: changes.expenses.display,
+      changeLabel: changes.expenses.label,
       icon: <TrendingDown size={20} />,
       gradient: "bg-gradient-to-br from-amber-400 to-orange-500",
-      positive: false,
+      positive: changes.expenses.positive,
     },
     {
-      title: "Savings",
+      title: "Monthly Savings",
       amount: savings,
-      change: "+12%",
-      changeLabel: "goal progress 60%",
+      change: changes.savings.display,
+      changeLabel: latestMonthLabel,
       icon: <PiggyBank size={20} />,
       gradient: "bg-gradient-to-br from-purple-500 to-purple-700",
-      positive: true,
+      positive: changes.savings.positive,
     },
   ];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <div>
-        <h1 className="text-[20px] md:text-[24px] text-gray-800 dark:text-white font-poppins-bold">
+        <h1 className="page-title">
           {"Good morning, Akshay \u{1F44B}"}
         </h1>
-        <p className="text-[14px] text-gray-500 dark:text-gray-400 mt-1">
+        <p className="page-subtitle">
           Here's what's happening with your finances today.
         </p>
       </div>

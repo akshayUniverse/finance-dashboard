@@ -7,7 +7,37 @@ import {
 
 const AppContext = createContext(null);
 const MOBILE_QUERY = "(max-width: 767px)";
+const STORAGE_KEYS = {
+  role: "finance-dashboard-role",
+  theme: "finance-dashboard-theme",
+  transactions: "finance-dashboard-transactions",
+};
 const validTypes = new Set(["income", "expense"]);
+
+function readStorage(key, fallback) {
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  try {
+    const rawValue = window.localStorage.getItem(key);
+    return rawValue ? JSON.parse(rawValue) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function writeStorage(key, value) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Ignore storage write failures and keep the UI responsive.
+  }
+}
 
 function cleanText(value) {
   return String(value ?? "")
@@ -26,9 +56,9 @@ function isValidDate(value) {
 }
 
 export function AppProvider({ children }) {
-  const [isDark, setIsDark] = useState(true);
-  const [role, setRole] = useState("Viewer");
-  const [transactions, setTransactions] = useState(seedTransactions);
+  const [isDark, setIsDark] = useState(() => readStorage(STORAGE_KEYS.theme, true));
+  const [role, setRole] = useState(() => readStorage(STORAGE_KEYS.role, "Viewer"));
+  const [transactions, setTransactions] = useState(() => readStorage(STORAGE_KEYS.transactions, seedTransactions));
   const [activePage, setActivePage] = useState("Dashboard");
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === "undefined") {
@@ -41,6 +71,18 @@ export function AppProvider({ children }) {
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
   }, [isDark]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.theme, isDark);
+  }, [isDark]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.role, role);
+  }, [role]);
+
+  useEffect(() => {
+    writeStorage(STORAGE_KEYS.transactions, transactions);
+  }, [transactions]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -115,6 +157,44 @@ export function AppProvider({ children }) {
     return true;
   };
 
+  const updateTransaction = (nextTx) => {
+    const description = cleanText(nextTx.description);
+    const amount = Number(nextTx.amount);
+
+    if (
+      !nextTx.id ||
+      !description ||
+      !Number.isFinite(amount) ||
+      amount <= 0 ||
+      !validTypes.has(nextTx.type) ||
+      !Object.hasOwn(categoryColors, nextTx.category) ||
+      !isValidDate(nextTx.date)
+    ) {
+      return false;
+    }
+
+    let updated = false;
+
+    setTransactions((prev) => prev.map((item) => {
+      if (item.id !== nextTx.id) {
+        return item;
+      }
+
+      updated = true;
+
+      return {
+        ...item,
+        amount,
+        category: nextTx.category,
+        date: nextTx.date,
+        description,
+        type: nextTx.type,
+      };
+    }));
+
+    return updated;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -127,6 +207,7 @@ export function AppProvider({ children }) {
         toggleRole,
         toggleTheme,
         transactions,
+        updateTransaction,
       }}
     >
       {children}

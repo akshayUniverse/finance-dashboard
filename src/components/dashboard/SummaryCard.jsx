@@ -1,4 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { formatCurrency } from "../../utils/finance";
 
 export default function SummaryCard({ title, amount, change, changeLabel, icon, gradient, positive }) {
   return (
@@ -22,8 +23,7 @@ export default function SummaryCard({ title, amount, change, changeLabel, icon, 
       <div>
         <p className="text-white/70 text-[12px] font-poppins-medium mb-1">{title}</p>
         <p className="text-white text-[24px] font-poppins-bold">
-          {"\u20b9"}
-          {amount.toLocaleString("en-IN")}
+          {formatCurrency(amount)}
         </p>
       </div>
 

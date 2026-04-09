@@ -1,45 +1,6 @@
 import { TrendingUp, TrendingDown, Award, AlertCircle, Lightbulb } from "lucide-react";
 import { useApp } from "../../context/AppContext";
-
-function getInsights(transactions) {
-  const categoryTotals = {};
-
-  transactions
-    .filter((item) => item.type === "expense")
-    .forEach((item) => {
-      categoryTotals[item.category] = (categoryTotals[item.category] || 0) + item.amount;
-    });
-
-  const sortedCategories = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1]);
-  const topCategory = sortedCategories[0] || ["None", 0];
-  const lowestCategory = sortedCategories[sortedCategories.length - 1] || ["None", 0];
-
-  const monthlyTotals = {};
-
-  transactions.forEach((item) => {
-    const month = item.date.slice(0, 7);
-
-    if (!monthlyTotals[month]) {
-      monthlyTotals[month] = { income: 0, expenses: 0 };
-    }
-
-    monthlyTotals[month][item.type === "income" ? "income" : "expenses"] += item.amount;
-  });
-
-  const months = Object.keys(monthlyTotals).sort();
-  const lastMonth = months.at(-1) ?? null;
-  const prevMonth = months.at(-2) ?? null;
-  const lastData = monthlyTotals[lastMonth] || { income: 0, expenses: 0 };
-  const prevData = monthlyTotals[prevMonth] || { income: 0, expenses: 0 };
-  const expenseChange = prevData.expenses > 0
-    ? (((lastData.expenses - prevData.expenses) / prevData.expenses) * 100).toFixed(1)
-    : 0;
-  const savingsRate = lastData.income > 0
-    ? (((lastData.income - lastData.expenses) / lastData.income) * 100).toFixed(1)
-    : 0;
-
-  return { expenseChange, lastMonth, lowestCategory, savingsRate, topCategory };
-}
+import { formatCurrency, getInsights } from "../../utils/finance";
 
 function InsightCard({ icon, label, value, sub, color }) {
   return (
@@ -58,21 +19,14 @@ function InsightCard({ icon, label, value, sub, color }) {
 
 export default function InsightsPanel() {
   const { transactions } = useApp();
-  const { expenseChange, lastMonth, lowestCategory, savingsRate, topCategory } = getInsights(transactions);
-
-  const monthLabel = lastMonth
-    ? new Date(`${lastMonth}-01T00:00:00`).toLocaleString("en-IN", {
-        month: "long",
-        year: "numeric",
-      })
-    : "No data yet";
+  const { expenseChange, hasExpenses, lastMonthLabel, lowestCategory, savingsRate, topCategory } = getInsights(transactions);
 
   const insights = [
     {
       icon: <Award size={16} className="text-amber-600" />,
       label: "Top Spending Category",
-      value: topCategory[0],
-      sub: `\u20b9${topCategory[1].toLocaleString("en-IN")} total spent`,
+      value: topCategory.name,
+      sub: `${formatCurrency(topCategory.value)} total spent`,
       color: "bg-amber-100 dark:bg-amber-900/30",
     },
     {
@@ -84,7 +38,7 @@ export default function InsightsPanel() {
         ),
       label: "Expense Change",
       value: `${expenseChange > 0 ? "+" : ""}${expenseChange}% vs prev month`,
-      sub: `In ${monthLabel}`,
+      sub: `In ${lastMonthLabel}`,
       color:
         Number(expenseChange) > 0
           ? "bg-red-100 dark:bg-red-900/30"
@@ -94,34 +48,44 @@ export default function InsightsPanel() {
       icon: <Lightbulb size={16} className="text-indigo-500" />,
       label: "Savings Rate",
       value: `${savingsRate}% of income saved`,
-      sub: `In ${monthLabel}`,
+      sub: `In ${lastMonthLabel}`,
       color: "bg-indigo-100 dark:bg-indigo-900/30",
     },
     {
       icon: <AlertCircle size={16} className="text-purple-500" />,
       label: "Lowest Spending",
-      value: lowestCategory[0],
-      sub: `\u20b9${lowestCategory[1].toLocaleString("en-IN")} total spent`,
+      value: lowestCategory.name,
+      sub: `${formatCurrency(lowestCategory.value)} total spent`,
       color: "bg-purple-100 dark:bg-purple-900/30",
     },
   ];
 
   return (
-    <div className="bg-white dark:bg-[#111827] rounded-[14px] p-5 flex flex-col gap-4">
+    <div className="surface-panel flex flex-col gap-4">
       <div>
-        <h2 className="text-gray-800 dark:text-white font-poppins-semibold">
-          Insights
-        </h2>
-        <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">
-          Auto-calculated from your transactions
-        </p>
+        <h2 className="section-title">Insights</h2>
+        <p className="section-subtitle">Auto-calculated from your transactions</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {insights.map((item) => (
-          <InsightCard key={item.label} {...item} />
-        ))}
-      </div>
+      {transactions.length === 0 ? (
+        <div className="surface-panel-muted min-h-[140px] flex items-center justify-center text-center px-6">
+          <div>
+            <p className="section-title">No insights available yet</p>
+            <p className="section-subtitle">Once transactions are added, this panel will highlight patterns automatically.</p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {insights.map((item) => (
+            <InsightCard
+              key={item.label}
+              {...item}
+              sub={!hasExpenses && item.label.includes("Spending") ? "No expense data yet" : item.sub}
+              value={!hasExpenses && item.label.includes("Spending") ? "Waiting for data" : item.value}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

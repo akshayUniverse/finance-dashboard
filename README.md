@@ -1,97 +1,81 @@
 # Finance Dashboard UI
 
-This is a frontend assignment project built for the React Developer Intern role.
+Frontend assignment submission for a Frontend Developer Intern role.
 
-The goal was to design and implement a clean and usable finance dashboard interface that focuses on clarity, responsiveness, and good component structure rather than unnecessary complexity.
+This project is a responsive finance dashboard built with React and mock data. The focus was to keep the experience clean and intuitive while still showing reusable component design, practical state management, and frontend-only role based behavior.
 
----
+## Live Demo
 
-## 🔗 Live Demo
+https://finance-dashboard-lilac-six.vercel.app/
 
-Deployed on Vercel: [finance-dashboard-lilac-six.vercel.app](https://finance-dashboard-lilac-six.vercel.app/)
+## Tech Stack
 
----
+- React with Vite
+- Tailwind CSS v4
+- Recharts
+- Lucide React
 
-## ⚙️ Tech Stack
+## Requirement Coverage
 
-* React (Vite)
-* Tailwind CSS
-* JavaScript (ES6+)
+- Dashboard overview with summary cards
+- Time based visualization for finance trends
+- Categorical spending breakdown chart
+- Transactions table with search, filtering, and sorting
+- Frontend role switching between Viewer and Admin
+- Admin actions for adding and editing transactions
+- Insights section with spending observations and monthly comparison
+- Responsive layout for mobile, tablet, and desktop
+- Empty states for data driven sections
 
----
+## Extra Improvements
 
-## 📌 Features Implemented
+- Dark and light mode
+- Local storage persistence for theme, role, and transactions
+- Reusable finance selectors and formatting utilities
+- Shared styling utilities for repeated typography and panel patterns
 
-* Dashboard overview with key financial metrics (balance, income, expenses)
-* Basic data visualization (trend + category breakdown)
-* Transactions list with simple structure
-* Role-based UI (Viewer / Admin toggle simulation)
-* Responsive layout (mobile + desktop)
-* Dark / Light mode toggle
-* Collapsible sidebar
-* Clean header with minimal controls
+## Approach
 
----
+I treated the assignment like a small but scalable product surface instead of a one-screen demo.
 
-## 🧠 Approach
+Key decisions:
 
-I tried to keep the implementation simple and focused on fundamentals:
+- Kept the layout modular using focused components
+- Centralized shared finance calculations into reusable utility functions
+- Stored app level concerns such as role, theme, and transactions in context
+- Added persistence so interactions survive refreshes
+- Reused styling primitives for repeated headings, subtitles, and card shells
 
-* Built reusable components instead of writing everything in one place
-* Avoided over-engineering since this is a frontend-only assignment
-* Focused on layout structure first, then added interactions
-* Used mock data to simulate real-world scenarios
-* Paid attention to spacing, readability, and consistency
+## Project Structure
 
-The goal was to make something that feels like a real product UI, not just a demo screen.
+```text
+src/
+  components/
+    dashboard/
+  context/
+  data/
+  pages/
+  utils/
+```
 
----
-
-## 📱 Responsiveness
-
-The layout adapts across:
-
-* Mobile (collapsed sidebar, minimal header)
-* Tablet
-* Desktop (full layout)
-
-Special attention was given to avoid clutter on smaller screens.
-
----
-
-## 🎯 What I Focused On
-
-* Clean and readable UI
-* Consistent spacing and layout
-* Simple state management
-* Smooth interactions (hover, toggle, dropdowns)
-* Keeping the experience intuitive
-
----
-
-## ⚠️ Notes
-
-* This is a frontend-only implementation
-* No real backend or API integration
-* Data is static / mocked
-
----
-
-## 🚀 Setup Instructions
+## Setup
 
 ```bash
 git clone https://github.com/akshayUniverse/finance-dashboard.git
-cd project
+cd finance-dashboard
 npm install
 npm run dev
 ```
 
----
+## Notes
 
-## ✍️ Final Thoughts
+- This is a frontend-only implementation
+- Data starts from mocked seed transactions
+- No backend or real authentication is included
 
-I approached this assignment as if I was building a small part of a real product.
+## What I Focused On
 
-Instead of adding too many features, I focused on doing the core things properly — layout, structure, and usability.
-
-Happy to improve or extend this further if needed.
+- Clean information hierarchy
+- Reusability in both logic and styling
+- Responsive behavior without changing the core experience
+- Practical UI states instead of only the happy path
